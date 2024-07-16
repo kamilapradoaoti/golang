@@ -8,6 +8,7 @@ import (
 
 func SendEmail(usuario, senha string, to, subject, body string, attachmentPath []string) error {
 	from := usuario
+
 	password := senha
 
 	// Configurações do servidor SMTP
