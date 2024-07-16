@@ -1,4 +1,4 @@
-module golang
+module github.com/kamilapradoaoti/golang
 
 go 1.22.5
 
