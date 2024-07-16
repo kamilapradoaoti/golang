@@ -1,6 +1,7 @@
 package lib
 
-// divide com trativa com zero
+/*Dividir
+  divite e trata por zero*/
 func Dividir(v1, v2 float64) float64 {
 	if v2 == 0 {
 		return 0
