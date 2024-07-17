@@ -4,6 +4,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/joho/godotenv"
 )
 
 func GetEnvInt(value string) int {
@@ -19,4 +21,12 @@ func GetEnvString(value string) string {
 func GetEnvBool(value string) bool {
 	str := os.Getenv(value)
 	return strings.ToUpper(str) == "TRUE"
+}
+
+func LoadEnv() error {
+	err := godotenv.Load()
+	if err != nil {
+		panic(err.Error())
+	}
+	return nil
 }

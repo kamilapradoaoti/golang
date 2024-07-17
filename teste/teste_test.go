@@ -3,13 +3,12 @@ package teste
 import (
 	"testing"
 
-	"github.com/joho/godotenv"
 	"github.com/kamilapradoaoti/golang/lib"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestSendEmailConjunto(t *testing.T) {
-	err := godotenv.Load()
+	err := lib.LoadEnv()
 	if err != nil {
 		panic(err.Error())
 	}
@@ -37,7 +36,7 @@ func TestSendEmailConjunto(t *testing.T) {
 	assert.NoError(t, err)
 }
 func TestSendEmailSingle(t *testing.T) {
-	err := godotenv.Load()
+	err := lib.LoadEnv()
 	if err != nil {
 		panic(err.Error())
 	}
