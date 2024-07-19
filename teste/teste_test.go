@@ -25,8 +25,21 @@ func TestSendEmailConjunto(t *testing.T) {
 	email.SetPort(port)
 	email.UseTls = useTls
 	email.Subject = "Test Email"
+	email.Body = `<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Simples</title>
+</head>
+<body>
+    <p>Olá, Mundo!</p>
+</body>
+</html>
+`
+
 	//email.Attachments = []string{"file1.txt", "file2.txt"}
-	email.Recipients = []string{"krobrelus@gmail.com", "kamilasprado@hotmail.com"}
+	email.Recipients = []string{"kamilasprado@hotmail.com"}
 
 	err = email.SendEmail()
 	if err != nil {

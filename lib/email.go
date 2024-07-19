@@ -15,6 +15,7 @@ type Email struct {
 	Subject     string   `json:"subject"`
 	Attachments []string `json:"attachments"`
 	Recipients  []string `json:"recipients"`
+	Body        string   `json:"body"`
 }
 
 func NewEmail() *Email {
@@ -32,12 +33,14 @@ func (e *Email) SetHost(host string) {
 func (e *Email) SetPort(port int) {
 	e.Port = port
 }
+
 func (e *Email) SendEmail() error {
 	// Criando uma nova mensagem
 	m := gomail.NewMessage()
 	m.SetHeader("From", e.User)
 	m.SetHeader("To", e.Recipients...)
 	m.SetHeader("Subject", e.Subject)
+	m.SetBody("Body", e.Body)
 
 	// Adicionando anexo se fornecido
 	if len(e.Attachments) > 0 {
@@ -62,7 +65,7 @@ func (e *Email) SendEmail() error {
 func (e *Email) SendEmailSingle() error {
 	m := gomail.NewMessage()
 	m.SetHeader("From", e.User)
-
+	m.SetBody("Body", e.Body)
 	m.SetHeader("Subject", e.Subject)
 
 	// Adicionando anexo se fornecido
