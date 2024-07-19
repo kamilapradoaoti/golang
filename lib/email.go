@@ -6,16 +6,34 @@ import (
 	"gopkg.in/gomail.v2"
 )
 
+type TipoEmail int
+
+const (
+	TE_HTML TipoEmail = iota
+	TE_TEXT
+)
+
 type Email struct {
-	Host        string   `json:"host"`
-	Port        int      `json:"port"`
-	User        string   `json:"user"`
-	Pass        string   `json:"pass"`
-	UseTls      bool     `json:"use_tls"`
-	Subject     string   `json:"subject"`
-	Attachments []string `json:"attachments"`
-	Recipients  []string `json:"recipients"`
-	Body        string   `json:"body"`
+	Host        string    `json:"host"`
+	Port        int       `json:"port"`
+	User        string    `json:"user"`
+	Pass        string    `json:"pass"`
+	UseTls      bool      `json:"use_tls"`
+	Subject     string    `json:"subject"`
+	Attachments []string  `json:"attachments"`
+	Recipients  []string  `json:"recipients"`
+	Body        string    `json:"body"`
+	Tipo        TipoEmail `json:"tipo"`
+}
+
+func (e *Email) GetTipo() string {
+	switch e.Tipo {
+	case TE_HTML:
+		return "text/html"
+	case TE_TEXT:
+		return "text/plain"
+	}
+	return "text/plain"
 }
 
 func NewEmail() *Email {
@@ -40,7 +58,7 @@ func (e *Email) SendEmail() error {
 	m.SetHeader("From", e.User)
 	m.SetHeader("To", e.Recipients...)
 	m.SetHeader("Subject", e.Subject)
-	m.SetBody("Body", e.Body)
+	m.SetBody(e.GetTipo(), e.Body)
 
 	// Adicionando anexo se fornecido
 	if len(e.Attachments) > 0 {
