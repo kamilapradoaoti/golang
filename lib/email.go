@@ -26,6 +26,11 @@ type Email struct {
 	Tipo        TipoEmail `json:"tipo"`
 }
 
+/*
+GetTipo
+
+Indica o tipo do corpo colocado no e-mail se é um texto normal ou se é HTML
+*/
 func (e *Email) GetTipo() string {
 	switch e.Tipo {
 	case TE_HTML:
@@ -36,6 +41,11 @@ func (e *Email) GetTipo() string {
 	return "text/plain"
 }
 
+/*
+NewEmail
+
+passa valor direto para struct
+*/
 func NewEmail() *Email {
 	return &Email{}
 }
@@ -52,12 +62,20 @@ func (e *Email) SetPort(port int) {
 	e.Port = port
 }
 
+/*
+SendEmail
+envia todos e-mails juntos
+*/
 func (e *Email) SendEmail() error {
 	// Criando uma nova mensagem
 	m := gomail.NewMessage()
+	//quem envia
 	m.SetHeader("From", e.User)
+	//quem recebe
 	m.SetHeader("To", e.Recipients...)
+	//assunto
 	m.SetHeader("Subject", e.Subject)
+	//corpo do e-mail
 	m.SetBody(e.GetTipo(), e.Body)
 
 	// Adicionando anexo se fornecido
@@ -80,11 +98,19 @@ func (e *Email) SendEmail() error {
 	return nil
 }
 
+/*
+SendEmailSingle
+envia os e-mails para cada remetente separadamente
+*/
 func (e *Email) SendEmailSingle() error {
+	//Criando uma nova mensagem
 	m := gomail.NewMessage()
+	//quem envia
 	m.SetHeader("From", e.User)
-	m.SetBody("Body", e.Body)
+	//assunto
 	m.SetHeader("Subject", e.Subject)
+	//corpo do e-mail
+	m.SetBody(e.GetTipo(), e.Body)
 
 	// Adicionando anexo se fornecido
 	if len(e.Attachments) > 0 {
@@ -105,6 +131,7 @@ func (e *Email) SendEmailSingle() error {
 			return err
 		}
 	}
+	//são os que vão receber os e-mails
 	m.SetHeader("To", e.Recipients...)
 
 	return nil
